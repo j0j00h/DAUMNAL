@@ -1,0 +1,42 @@
+version: "3.8"
+services:
+  spring:
+    container_name: daumnal-spring
+    image: spring-image
+    build:
+      context: ../../daumnal
+      dockerfile: Dockerfile
+    environment:
+      - TZ=Asia/Seoul
+    networks:
+      - daumnal-network
+    restart: always
+  fastapi:
+    container_name: daumnal-fastapi
+    image: fastapi-image
+    build:
+      context: ../../fastapi
+      dockerfile: Dockerfile
+    environment:
+      - TZ=Asia/Seoul
+    networks:
+      - daumnal-network
+    restart: always
+  react:
+    container_name: daumnal-react
+    image: react-image
+    build:
+      context: ../../../frontend/daumnal
+      dockerfile: Dockerfile
+    environment:
+      - TZ=Asia/Seoul
+    volumes:
+      - react-volume:/etc/nginx/conf.d
+    networks:
+      - daumnal-network
+volumes:
+  react-volume:
+    external: true
+networks:
+  daumnal-network:
+    external: true
